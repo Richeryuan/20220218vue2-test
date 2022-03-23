@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap@3.3.5/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://unpkg.com/font-awesome@4.4.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="./style.css" />
+</head>
+
+<body>
+    <div id="app">
+        <nav class="container">
+            <h1 class="pull-left">獨立音樂活動清單</h1>
+
+            <div class="pull-left tabs">
+                <!-- 不同的分頁 -->
+                <span class="glyphicon glyphicon-th-large"></span>
+                <span class="glyphicon glyphicon-star"></span>
+            </div>
+
+            <div class="pull-right">
+                <!-- 不同的過濾器 -->
+                <span class="glyphicon glyphicon-time"></span>
+                <span class="glyphicon glyphicon-tag"></span>
+                <input type="text" placeholder="過濾器" />
+            </div>
+        </nav>
+
+        <main class="container">
+            <div class="items">
+                <article class="item" v-for=" activityObject  in  activityObjectArr">
+                    <header>
+                        <h1>活動名</h1>
+                        <div class="animation-swipe star" v-bind:class="{ favorite : favorite[activityObject.uid] } "
+                            v-on:click="toggle_like(activityObject.uid)">
+                            <span class="glyphicon glyphicon-star"></span>
+                            <!-- @click="toggle_like(activityObject.uid)" 等於 v-on:click="toggle_like(activityObject.uid)"-->
+                            <!-- v-on:click88個都會監聽 -->
+                            
+                        </div>
+                    </header>
+
+                    <dl>
+                        <dt>Time</dt>
+                        <dd>{{activityObject.time}}</dd>
+                    </dl>
+
+                    <dl>
+                        <dt>Price</dt>
+                        <dd>{{activityObject.price}}</dd>
+                    </dl>
+
+                    <dl>
+                        <dt>address</dt>
+                        <dd>{{activityObject.address}}</dd>
+                    </dl>
+                </article>
+            </div>
+        </main>
+
+        <footer class="container">
+            <span>目前資料總價</span>
+            <span v-if="!hasData">目前還沒有資料。</span>
+        </footer>
+    </div>
+
+    <script src="https://unpkg.com/jquery@3.3.1/dist/jquery.min.js"></script>
+    <script src="https://unpkg.com/bootstrap@3.3.5/dist/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/vue@3"></script>
+    <script>
+        $.getJSON("./show.min.json", function (json) {
+            console.log(json);
+
+            //judge has value or not
+            let hasData = false;
+            if (json && json.length) {
+                hasData = true;
+            }
+
+            window.app = Vue.createApp({
+                // 1
+
+                data() {
+                    return {
+                        activityObjectArr: json,
+                        hasData: hasData,
+                        favorite: {} // uid : likeOrNot
+                    }; //toggle_like (反向喜歡，原本不喜歡，Toggle就會變喜歡)
+                }, // 2
+                methods: {
+                    toggle_like: function (uid) {
+                        this.favorite[uid] = !this.favorite[uid];
+                        console.log(this, uid, this.favorite[uid]); //this.favorite[uid]電腦會幫我查詢這個活動喜不喜歡
+                    }
+                },
+                computed: {
+                    current_activities: function () { },
+                    hasData() { },
+                    total: function () { }
+                }
+            }).mount("#app"); // 3
+        });
+    </script>
+</body>
+
+</html>

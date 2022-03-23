@@ -1,0 +1,12 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.0.3/vue.js"></script>
+
+<div id="app" data-name="">
+  <!-- 可運算 -->
+  Hi, {{last + name}}, {{message}} ,{{8+9}},{{"shrkira"+"shrkira2"}}
+
+  <a v-bind:title="titleTxt" href="#">web</a>
+  <br>
+  <!-- v-if，ture顯示 fales不顯示 -->
+  <img v-if="imgSrc" :src="imgSrc" :title="titleTxt" :alt="titleTxt" width="300" height="300" />
+</div>
+<script src="20220218vue.js"></script>
